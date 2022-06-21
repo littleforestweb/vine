@@ -1,2 +1,2 @@
 # vine
-LF Customer Communication App
+LF Customer Care App
