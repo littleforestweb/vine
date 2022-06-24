@@ -1,0 +1,215 @@
+/*
+    Created on : 02 Mar 2022, 09:59:17
+    Author     : xhico
+*/
+
+@import "../fonts/inter/style.css";
+
+:root {
+    --lfi-green-rgb: 22, 103, 19;
+    --lfi-blue-rgb: 49, 94, 127;
+    --lfi-red-rgb: 218, 45, 44;
+    --lfi-orange-rgb: 164, 106, 0;
+    --lfi-bg-opacity: 1;
+}
+
+html, body {
+    height: 100%;
+}
+
+body * {
+    font-family: 'Inter Regular';
+}
+
+body {
+    margin-top: 60px;
+}
+
+.truncate {
+    max-width: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dataGreen {
+    color: rgba(var(--lfi-green-rgb));
+}
+
+.dataOrange {
+    color: rgba(var(--lfi-orange-rgb));;
+}
+
+.dataRed {
+    color: rgba(var(--lfi-red-rgb));
+}
+
+.dataBlue {
+    color: rgba(var(--lfi-blue-rgb));
+}
+
+.green-link {
+    color: rgba(var(--lfi-green-rgb));
+}
+
+.green-link:hover {
+    color: rgba(var(--lfi-green-rgb));
+    font-weight: bold;
+}
+
+div.dt-buttons {
+    float: right;
+    margin-left: 10px
+}
+
+td.center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: rgba(var(--lfi-green-rgb));
+    border-color: rgba(var(--lfi-green-rgb));
+}
+
+.btn-success.active {
+    background-color: rgba(var(--lfi-green-rgb));
+    color: #ffffff;
+}
+
+.btn-success:hover {
+    color: #ffffff;
+    box-shadow: 0 0 0 4px #02490E;
+    background-color: rgba(var(--lfi-green-rgb));
+    transition: all .5s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+}
+
+.btn-red {
+    color: #fff;
+    background-color: rgba(var(--lfi-red-rgb));
+    border-color: rgba(var(--lfi-red-rgb));
+}
+
+.btn-red.active {
+    background-color: rgba(var(--lfi-red-rgb));
+    color: #ffffff;
+}
+
+.btn-red:hover {
+    color: #ffffff;
+    box-shadow: 0 0 0 4px #8d1a19;
+    background-color: rgba(var(--lfi-red-rgb));
+    transition: all .5s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+}
+
+.btn-blue {
+    color: #fff;
+    background-color: rgba(var(--lfi-blue-rgb));
+    border-color: rgba(var(--lfi-blue-rgb));
+}
+
+.btn-blue.active {
+    background-color: rgba(var(--lfi-blue-rgb));
+    color: #ffffff;
+}
+
+.btn-blue:hover {
+    color: #ffffff;
+    box-shadow: 0 0 0 4px #1d3559;
+    background-color: rgba(var(--lfi-blue-rgb));
+    transition: all .5s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+}
+
+.btn-orange {
+    color: #fff;
+    background-color: rgba(var(--lfi-orange-rgb));
+    border-color: rgba(var(--lfi-orange-rgb));
+}
+
+.btn-orange.active {
+    background-color: rgba(var(--lfi-orange-rgb));
+    color: #ffffff;
+}
+
+.btn-orange:hover {
+    color: #ffffff;
+    box-shadow: 0 0 0 4px #754c00;
+    background-color: rgba(var(--lfi-orange-rgb));
+    transition: all .5s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+}
+
+.btn-export {
+    color: #000000;
+    background-color: #f8f8f8;
+    border-color: #f8f8f8;
+}
+
+.btn-export.active {
+    background-color: #f8f8f8;
+    color: #000000;
+}
+
+.btn-export:hover {
+    color: #000000;
+    box-shadow: 0 0 0 4px #ccc;;
+    background-color: #f8f8f8;
+    transition: all .5s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+}
+
+
+.max100px {
+    max-width: 100px;
+}
+
+table.dataTable tbody th, table.dataTable tbody td {
+    vertical-align: middle;
+}
+
+.header-1 {
+    margin: 1.5rem 7px;
+    float: none;
+    position: relative;
+    clear: both;
+    background: white;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #dadada;
+    display: inline-block;
+}
+
+.header-1 h3, .header-1 div {
+    margin-bottom: 0rem;
+    margin-top: 0rem;
+}
+
+.navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .show > .nav-link {
+    color: rgba(var(--lfi-green-rgb));
+    font-weight: bold;
+}

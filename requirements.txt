@@ -1,0 +1,8 @@
+flask
+requests
+flask-cors
+flask_login
+flask_bcrypt
+flask_wtf
+flask_sqlalchemy
+mysql-connector-python

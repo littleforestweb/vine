@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %}User to Group Mappings{% endblock %}
+
+{% block content %}
+
+    <!-- EDIT MAPPING MODAL -->
+    <div class="modal fade" id="editMappingModal" tabindex="-1" aria-labelledby="editMappingModalLabel" aria-hidden="true" onshow="getSelectedMappingData()">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editMappingLabel">Edit Mapping</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="e-mapping-group-id" class="col-form-label">Group ID:</label>
+                            <input type="text" class="form-control" id="e-mapping-group-id">
+                        </div>
+                        <div class="mb-3">
+                            <label for="e-mapping-group-name" class="col-form-label">Group Name:</label>
+                            <input type="text" class="form-control" id="e-mapping-group-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="e-mapping-user-name" class="col-form-label">User Name:</label>
+                            <input type="text" class="form-control" id="e-mapping-user-name">
+                        </div>
+
+                        <input type="hidden" id="h-e-mapping-group-id">
+                        <input type="hidden" id="h-e-mapping-group-name">
+                        <input type="hidden" id="h-e-mapping-user-name">
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="updateMapping();">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ADD MAPPING MODAL -->
+    <div class="modal fade" id="addMappingModal" tabindex="-1" aria-labelledby="addMappingModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addMappingLabel">Add Mapping</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="mapping-group-id" class="col-form-label">Group ID:</label>
+                            <input type="text" class="form-control" id="mapping-group-id">
+                        </div>
+                        <div class="mb-3">
+                            <label for="mapping-group-name" class="col-form-label">Group Name:</label>
+                            <input type="text" class="form-control" id="mapping-group-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="mapping-user-name" class="col-form-label">User Name:</label>
+                            <input type="text" class="form-control" id="mapping-user-name">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="addMapping()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ERROR MODAL -->
+    <div class="modal fade" id="errorModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error adding new mapping</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>There was an error adding a new user to group mapping<br>Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <!-- Add Success -->
+        <div id="addMappingSuccessNotification" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Mapping added successfully
+            </div>
+        </div>
+
+        <!-- Del Success -->
+        <div id="deleteMappingSuccessNotification" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Mapping/s deleted successfully
+            </div>
+        </div>
+
+        <!-- Edit Success -->
+        <div id="editMappingSuccessNotification" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Mapping updated successfully
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Table -->
+    <div id="TableDiv" class="card mb-4">
+        <div class="card-body">
+            <div class="header-1">
+                <h3 style="float: left">User to Group Mappings</h3>
+                <div style="float:right; margin-left: 10px;" class="header-btns">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMappingModal">Add Mapping</button>
+                    <button type="button" class="btn btn-red" data-bs-toggle="modal" data-bs-target="#deleteMapping" onclick="deleteMapping()">Delete Mappings</button>
+                    <button type="button" class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#editMappingModal" onclick="console.log('populateEditMappingModal'); populateEditMappingModal();">Edit Mapping</button>
+                </div>
+            </div>
+            <table class="table" id="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Group ID</th>
+                    <th>Group Name</th>
+                    <th>User Name</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Group ID</th>
+                    <th>Group Name</th>
+                    <th>User Name</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <!-- End Table -->
+{% endblock %}
+
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/ugmappings.js') }}"></script>
+{% endblock %}

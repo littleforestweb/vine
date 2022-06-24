@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Site{% endblock %}
+
+{% block content %}
+    <script>
+        let site_id = '{{ id }}';
+    </script>
+
+    <!-- PUBLISH MODAL -->
+    <div class="modal fade" id="publishModal" tabindex="-1" aria-labelledby="Publish Modal" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Send to a reviewer</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm text-center">
+                                <button class="bg-transparent border-0" onclick="selectUserReviewer(this)">
+                                    <img width="100px" src="{{ url_for('static', filename='images/usersIcons/boy.png') }}" alt="Responsive image">
+                                    <span>Gavin</span>
+                                </button>
+                            </div>
+                            <div class="col-sm text-center">
+                                <button class="bg-transparent border-0" onclick="selectUserReviewer(this)">
+                                    <img width="100px" src="{{ url_for('static', filename='images/usersIcons/gamer.png') }}" alt="Responsive image">
+                                    <span>Joao</span>
+                                </button>
+                            </div>
+                            <div class="col-sm text-center">
+                                <button class="bg-transparent border-0" onclick="selectUserReviewer(this)">
+                                    <img width="100px" src="{{ url_for('static', filename='images/usersIcons/woman.png') }}" alt="Responsive image">
+                                    <span>Billy</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mt-2">
+                        <label class="form-label" for="publishComments">Comments</label><textarea class="form-control" id="publishComments" placeholder="Comments" rows="3"></textarea>
+                    </div>
+                    <div class="container mt-2">
+                        <label for="selectedIds" class="form-label">Selected ID's</label><textarea disabled class="form-control" id="selectedIds" rows="1"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">@</span>
+                        </div>
+                        <input type="text" id="selectedUsers" class="form-control" placeholder="Username"
+                               aria-label="Username"
+                               aria-describedby="basic-addon1">
+                        <button type="button" onclick="addWorkflow()" class="btn btn-success">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PUBLISH MODAL -->
+
+    <!-- NOTIFICATIONS -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <!-- PUBLISHED NOTIFICATION -->
+        <div id="publishedNotification" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Changes successively sent to review.</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <a id="viewWorkflow" class="btn btn-success" type="button">View</a>
+            </div>
+        </div>
+        <!-- END PUBLISHED NOTIFICATION -->
+    </div>
+    <!-- END NOTIFICATIONS -->
+
+    <div id="TableDiv" class="card mb-4">
+        <div class="card-body">
+            <div class="header-1">
+                <h3 style="float: left">Site - <span id="TableName"></span></h3>
+                <div style="float:right; margin-left: 10px;" class="header-btns">
+                    <button type="button" class="btn btn-success" onclick="publishSite()">Publish</button>
+                </div>
+            </div>
+            <table class="table" id="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Screenshot</th>
+                    <th>Title</th>
+                    <th>URL</th>
+                    <th>Modified Date</th>
+                    <th>Add by</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Screenshot</th>
+                    <th>Title</th>
+                    <th>URL</th>
+                    <th>Modified Date</th>
+                    <th>Add by</th>
+                    <th>Action</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/get_site.js') }}"></script>
+{% endblock %}

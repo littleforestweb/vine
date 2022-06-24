@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+    <script>
+        $("#nav-link-notifications").addClass("active");
+    </script>
+
+    <!-- ADD NOTIFICATION MODAL -->
+    <div class="modal fade" id="addNotificationModal" tabindex="-1" aria-labelledby="addNotificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNotificationLabel">Add Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="notification-url" class="col-form-label">URL:</label>
+                            <input type="text" class="form-control" id="notification-url">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="addNotification()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT NOTIFICATION MODAL -->
+    <div class="modal fade" id="editNotificationModal" tabindex="-1" aria-labelledby="editNotificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editNotificationLabel">Edit Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="e-notification-id" class="col-form-label">Notification ID:</label>
+                            <input type="text" class="form-control" id="e-notification-id">
+                        </div>
+                        <div class="mb-3">
+                            <label for="e-notification-url" class="col-form-label">URL:</label>
+                            <input type="text" class="form-control" id="e-notification-url">
+                        </div>
+                        <div class="mb-3">
+                            <label for="e-notification-folder" class="col-form-label">Folder:</label>
+                            <input type="text" class="form-control" id="e-notification-folder">
+                        </div>
+
+                        <input type="hidden" class="form-control" id="h-e-notification-id">
+                        <input type="hidden" class="form-control" id="h-e-notification-url">
+                        <input type="hidden" class="form-control" id="h-e-notification-folder">
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="updateNotification()">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- (DELETE) ERROR MODAL -->
+    <div class="modal fade" id="errorDeleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error deleting notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>There was an error removing your notification<br>Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ERROR MODAL -->
+    <div class="modal fade" id="errorModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error adding new notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>There was an error adding your notification<br>Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <!-- Add Success -->
+        <div id="addNotificationSuccessNotification" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Notification added successfully!
+            </div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div id="TableDiv" class="card mb-4">
+        <div class="card-body">
+            <div class="header-1">
+                <h3 style="float: left">Notifications</h3>
+                <div style="float:right; margin-left: 10px;" class="header-btns">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addNotificationModal">Add Notification</button>
+                    <button type="button" class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#editNotificationModal" onclick="console.log('Edit Notification button clicked'); populateEditNotificationDialog();">Edit Notification</button>
+                    <button type="button" class="btn btn-red" data-bs-toggle="modal" data-bs-target="#deleteNotificationModal" onclick="console.log('Delete Notification button clicked'); deleteNotifications();">Delete Notification</button>
+                    {#                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#publishNotificationModal">Publish Notification</button>#}
+                </div>
+            </div>
+            <table class="table" id="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>URL</th>
+                    <th>Folder</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>URL</th>
+                    <th>Folder</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <!-- End Table -->
+{% endblock %}
+
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+{% endblock %}

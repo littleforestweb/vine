@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}Groups{% endblock %}
+
+{% block content %}
+    <script>
+        $("#nav-link-groups").addClass("active");
+    </script>
+
+    <!-- EDIT GROUP MODAL -->
+    <div class="modal fade" id="editGroupModal" tabindex="-1" aria-labelledby="editGroupModalLabel" aria-hidden="true" onshow="getSelectedGroupData()">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editGroupLabel">Edit Group</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="e-group-name" class="col-form-label">Group Name:</label>
+                            <input type="text" class="form-control" id="e-group-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="e-group-display-name" class="col-form-label">Group Display Name:</label>
+                            <input type="text" class="form-control" id="e-group-display-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="e-group-description" class="col-form-label">Description:</label>
+                            <input type="text" class="form-control" id="e-group-description">
+                        </div>
+                        <div class="mb-3">
+                            <label for="e-group-id" class="col-form-label">Group ID:</label>
+                            <input type="text" class="form-control" id="e-group-id">
+                        </div>
+
+                        <input type="hidden" id="h-e-group-name">
+                        <input type="hidden" id="h-e-group-display-name">
+                        <input type="hidden" id="h-e-group-description">
+                        <input type="hidden" id="h-e-group-id">
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="updateGroup();">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- ADD GROUP MODAL -->
+    <div class="modal fade" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addGroupLabel">Add Group</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="group-name" class="col-form-label">Group Name:</label>
+                            <input type="text" class="form-control" id="group-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="group-display-name" class="col-form-label">Group Display Name:</label>
+                            <input type="text" class="form-control" id="group-display-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="group-description" class="col-form-label">Description:</label>
+                            <input type="text" class="form-control" id="group-description">
+                        </div>
+                        <div class="mb-3">
+                            <label for="group-id" class="col-form-label">Groupd ID:</label>
+                            <input type="text" class="form-control" id="group-id">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="addGroup()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ERROR MODAL -->
+    <div class="modal fade" id="errorModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error adding new group</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>There was an error adding a new group<br>Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <!-- Add Success -->
+        <div id="addGroupSuccessNotification" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Group added successfully!
+            </div>
+        </div>
+
+        <!-- Del Success -->
+        <div id="deleteGroupSuccessNotification" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Group/s deleted successfully!
+            </div>
+        </div>
+
+        <!-- Edit Success -->
+        <div id="editGroupSuccessNotification" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Group updated successfully!
+            </div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div id="TableDiv" class="card mb-4">
+        <div class="card-body">
+            <div class="header-1">
+                <h3 style="float: left">Groups</h3>
+                <div style="float:right; margin-left: 10px;" class="header-btns">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addGroupModal" onclick="clearAddGroupsDialog()">Add Group</button>
+                    <button type="button" class="btn btn-red" data-bs-toggle="modal" data-bs-target="#deleteGroup" onclick="deleteGroups()">Delete Groups</button>
+                    <button type="button" class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#editGroupModal" onclick="console.log('populateEditGroupModal'); populateEditGroupModal();">Edit Group</button>
+                </div>
+            </div>
+            <table class="table" id="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Group Name</th>
+                    <th>Group Display Name</th>
+                    <th>Group Description</th>
+                    <th>Group ID</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Group Name</th>
+                    <th>Group Display Name</th>
+                    <th>Group Description</th>
+                    <th>Group ID</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <!-- End Table -->
+{% endblock %}
+
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/groups.js') }}"></script>
+{% endblock %}

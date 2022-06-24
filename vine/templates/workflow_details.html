@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Workflow Details{% endblock %}
+
+{% block content %}
+    <script>
+        let workflow_id = '{{ data.id }}';
+    </script>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            {# HEADER #}
+            <div class="header-1">
+                <h3 style="float: left">Workflow Details</h3>
+            </div>
+
+            {# TOP CARDS #}
+            <div class="row text-center mb-4">
+                <div class="col-sm-1">
+                    <div class="card">
+                        <h5 class="card-header">ID</h5>
+                        <div class="card-body">{{ data.id }}</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="card">
+                        <h5 class="card-header">User</h5>
+                        <div class="card-body">{{ data.startUser }}</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="card">
+                        <h5 class="card-header">Editor</h5>
+                        <div class="card-body">{{ data.assignEditor }}</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="card">
+                        <h5 class="card-header">Due Date</h5>
+                        <div class="card-body">{{ data.dueDate }}</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="card">
+                        <h5 class="card-header">Submitted Date</h5>
+                        <div class="card-body">{{ data.submittedDate }}</div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="card">
+                        <h5 class="card-header">Status</h5>
+                        <div class="card-body">{{ data.status }}</div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="card">
+                        <h5 class="card-header">Action</h5>
+                        <div class="card-body">
+                            {% if data.status != "Approved" and data.status != "Rejected" %}
+                                <a class='green-link' href='#' onclick='setStatus("Approved", "{{ data.id }}")'>Approve</a>
+                                <br>
+                                <a class='green-link' href='#' onclick='setStatus("Rejected", "{{ data.id }}")'>Reject</a>
+                            {% else %}
+                                <span>No Acttion</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# COMMENTS / TAGS CARDS #}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <h5 class="card-header text-center">Comments</h5>
+                        <div class="card-body">{{ data.comments }}</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <h5 class="card-header text-center">Tags</h5>
+                        <div class="card-body">{{ data.tags }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/workflow_details.js') }}"></script>
+{% endblock %}
